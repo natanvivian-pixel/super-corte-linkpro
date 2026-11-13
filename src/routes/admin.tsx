@@ -876,7 +876,15 @@ function Panel() {
                 >
                   {b.status}
                 </span>
-                <span className="text-sm font-semibold">R$ {formatBRL(b.price)}</span>
+                <label className="flex items-center gap-1 text-sm font-semibold">R$
+                  <input key={`${b.id}-${b.price}`} aria-label="Valor do agendamento" defaultValue={formatBRL(b.price)} inputMode="decimal" onBlur={async (e) => {
+                    const v = Number(e.target.value.replace(/\./g, "").replace(",", "."));
+                    if (!Number.isFinite(v) || v < 0) { e.target.value = formatBRL(b.price); toast.error("Valor inválido."); return; }
+                    if (v === Number(b.price)) return;
+                    const { error } = await supabase.from("bookings").update({ price: v }).eq("id", b.id);
+                    if (error) toast.error("Não foi possível alterar o valor."); else toast.success("Valor atualizado.");
+                  }} className="w-16 rounded-md border border-border bg-background px-1.5 py-0.5 text-sm outline-none focus:border-gold" />
+                </label>
                 <button
                   type="button"
                   onClick={() => remove(b)}

@@ -74,6 +74,8 @@ function Agendar() {
   const [authMode, setAuthMode] = useState<"signup" | "login">("signup");
   const [authenticatedEmail, setAuthenticatedEmail] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [sessionChecked, setSessionChecked] = useState(false);
+  const [skipAuth, setSkipAuth] = useState(false);
   const [done, setDone] = useState<null | { time: string; date: string; service: string }>(null);
 
   useEffect(() => {
@@ -88,7 +90,7 @@ function Agendar() {
       if (typeof savedPhone === "string") setPhone((v) => v || savedPhone);
     };
     supabase.auth.getSession().then(({ data }) => {
-      if (mounted) applySession(data.session);
+      if (mounted) { applySession(data.session); setSessionChecked(true); }
     });
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       applySession(session);
@@ -268,9 +270,9 @@ function Agendar() {
         toast.error("Informe um e-mail válido ou deixe e-mail e senha em branco para agendar sem conta.");
         return;
       }
-      if (password.length < 8) {
+      if (password.length < 6) {
         setSaving(false);
-        toast.error("Sua senha deve ter pelo menos 8 caracteres.");
+        toast.error("Sua senha deve ter pelo menos 6 caracteres.");
         return;
       }
 
@@ -338,6 +340,57 @@ function Agendar() {
       return;
     }
     setDone({ time, date, service: selected.name });
+  }
+
+  async function authSubmit() {
+    const mail = email.trim().toLowerCase();
+    if (authMode === "signup" && name.trim().length < 2) { toast.error("Informe seu nome."); return; }
+    if (authMode === "signup" && phone.replace(/\D/g, "").length < 10) { toast.error("Informe um WhatsApp válido."); return; }
+    if (!/^\S+@\S+\.\S+$/.test(mail)) { toast.error("Informe um e-mail válido."); return; }
+    if (password.length < 6) { toast.error("A senha deve ter pelo menos 6 caracteres."); return; }
+    setSaving(true);
+    const { data, error } = authMode === "signup"
+      ? await supabase.auth.signUp({ email: mail, password, options: { data: { full_name: name.trim(), phone: phone.trim() } } })
+      : await supabase.auth.signInWithPassword({ email: mail, password });
+    setSaving(false);
+    if (error || !data.session) {
+      const msg = error?.message.toLowerCase() ?? "";
+      toast.error(authMode === "login" ? "E-mail ou senha inválidos." : msg.includes("already") ? "Este e-mail já tem conta. Toque em Já tenho conta." : "Não foi possível criar a conta. Confira os dados.");
+      return;
+    }
+    toast.success(authMode === "signup" ? "Conta criada! Agora é só agendar." : "Pronto, você entrou!");
+  }
+
+  if (sessionChecked && !authenticatedEmail && !skipAuth && !done) {
+    const field = "w-full rounded-full border border-border bg-card px-5 py-3.5 text-sm outline-none focus:border-gold";
+    return (
+      <div className="min-h-screen bg-background pb-12">
+        <main className="mx-auto max-w-md px-5 pt-10 text-center">
+          <img src={logo.url} alt="Barbearia Bom Jesus" className="mx-auto h-32 w-32 object-contain" />
+          <h1 className="mt-4 font-display text-xl font-semibold uppercase tracking-[0.2em] text-gold">{authMode === "signup" ? "Crie sua conta" : "Entrar"}</h1>
+          <p className="mt-3 text-sm text-muted-foreground">{authMode === "signup" ? "Leva 1 minuto e é só uma vez. Depois, seu celular fica conectado e você só escolhe o horário." : "Use o e-mail e a senha que você cadastrou."}</p>
+          <div className="mt-6 space-y-3 text-left">
+            {authMode === "signup" ? <>
+              <input aria-label="Seu nome" value={name} onChange={(e) => setName(e.target.value)} placeholder="Seu nome" className={field} />
+              <input aria-label="WhatsApp" value={phone} onChange={(e) => {
+                const d = e.target.value.replace(/\D/g, "").slice(0, 11);
+                setPhone(d.length <= 2 ? (d ? `(${d}` : "") : d.length <= 7 ? `(${d.slice(0, 2)}) ${d.slice(2)}` : `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`);
+              }} inputMode="tel" placeholder="WhatsApp (51) 99999-9999" className={field} />
+            </> : null}
+            <input aria-label="E-mail" type="email" autoComplete="email" value={email} onChange={(e) => {
+              const v = e.target.value.replace(/\s/g, "");
+              setEmail(v.endsWith("@") && !email.includes("@") && v.length > email.length ? `${v}gmail.com` : v);
+            }} onBlur={() => { if (email && !email.includes("@")) setEmail(`${email}@gmail.com`); }} placeholder="Seu e-mail" className={field} />
+            <input aria-label="Senha" type="password" autoComplete={authMode === "signup" ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Senha (mínimo 6 caracteres)" className={field} />
+          </div>
+          <Button type="button" onClick={authSubmit} disabled={saving} className="mt-6 h-14 w-full rounded-full bg-gold text-sm font-semibold uppercase tracking-[0.15em] text-gold-foreground hover:bg-gold/90">
+            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : null} {authMode === "signup" ? "Criar conta e agendar" : "Entrar e agendar"}
+          </Button>
+          <button type="button" onClick={() => setAuthMode(authMode === "signup" ? "login" : "signup")} className="mt-4 text-sm font-semibold text-gold">{authMode === "signup" ? "Já tenho conta" : "Criar conta nova"}</button>
+          <button type="button" onClick={() => setSkipAuth(true)} className="mt-3 block w-full text-xs text-muted-foreground underline">Agendar sem conta</button>
+        </main>
+      </div>
+    );
   }
 
   if (done) {
@@ -458,7 +511,7 @@ function Agendar() {
                 const v = e.target.value.replace(/\s/g, "");
                 setEmail(v.endsWith("@") && !email.includes("@") && v.length > email.length ? `${v}gmail.com` : v);
               }} onBlur={() => { if (email && !email.includes("@")) setEmail(`${email}@gmail.com`); }} placeholder="Seu e-mail" className="w-full rounded-full border border-border bg-background px-5 py-3.5 text-sm outline-none focus:border-gold" />
-              <input aria-label="Senha" type="password" autoComplete={authMode === "signup" ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Senha (mínimo 8 caracteres)" className="w-full rounded-full border border-border bg-background px-5 py-3.5 text-sm outline-none focus:border-gold" />
+              <input aria-label="Senha" type="password" autoComplete={authMode === "signup" ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Senha (mínimo 6 caracteres)" className="w-full rounded-full border border-border bg-background px-5 py-3.5 text-sm outline-none focus:border-gold" />
             </div>
           )}
           <textarea aria-label="Observação" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Observação (opcional)" rows={2} className="w-full resize-none rounded-2xl border border-border bg-card px-5 py-3.5 text-sm outline-none focus:border-gold" />

@@ -50,6 +50,13 @@
       "when": 1793722881540,
       "tag": "0006_optional_account_booking",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1794663477371,
+      "tag": "0007_migration",
+      "breakpoints": true
     }
   ]
 }

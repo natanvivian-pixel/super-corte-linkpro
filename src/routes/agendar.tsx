@@ -1,3 +1,4 @@
+import { notifyNewBooking } from "@/lib/notify.functions";
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
@@ -318,7 +319,7 @@ function Agendar() {
       }
     }
 
-    const { error } = await supabase.rpc("create_booking_authenticated", {
+    const { data: newId, error } = await supabase.rpc("create_booking_authenticated", {
       _barber_id: barberId,
       _customer_name: name.trim(),
       _customer_phone: phone.trim(),
@@ -339,6 +340,7 @@ function Agendar() {
       toast.error(error.message.includes("horário") ? error.message : "Não foi possível agendar. Tente novamente.");
       return;
     }
+    if (newId) void notifyNewBooking({ data: { bookingId: newId } }).catch(() => {});
     setDone({ time, date, service: selected.name });
   }
 

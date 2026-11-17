@@ -1,7 +1,8 @@
+import { enablePush } from "@/lib/push";
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import type { Session } from "@supabase/supabase-js";
-import { Check, CheckCheck, Clock, Download, LogOut, Loader2, Phone, Plus, Share, Trash2, X } from "lucide-react";
+import { Check, CheckCheck, Clock, Download, LogOut, Bell, Loader2, Phone, Plus, Share, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { BrandHeader } from "@/components/BrandHeader";
@@ -378,7 +379,7 @@ function Admin() {
     );
   }
 
-  const adminEmails = ["natanvivian39@gmail.com", "douglasmachadodigao@gmail.com"];
+  const adminEmails = ["natanvivian39@gmail.com", "douglasmachadodigao@gmail.com", "juniorjosias2018@gmail.com"];
   const isAuthorizedAdmin = !!session?.user.email && adminEmails.includes(session.user.email.trim().toLowerCase());
 
   // An authenticated but unauthorized account must never see the admin panel.
@@ -413,7 +414,7 @@ function LoginCard() {
   async function submit() {
     setBusy(true);
     const normalizedEmail = email.trim().toLowerCase();
-    const adminEmails = ["natanvivian39@gmail.com", "douglasmachadodigao@gmail.com"];
+    const adminEmails = ["natanvivian39@gmail.com", "douglasmachadodigao@gmail.com", "juniorjosias2018@gmail.com"];
     if (!adminEmails.includes(normalizedEmail)) {
       toast.error("Este e-mail não está autorizado a acessar o painel.");
       setBusy(false);
@@ -750,6 +751,25 @@ function Panel() {
             {current?.name ?? "Agendamentos"}
           </button>
         </div>
+        <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={async () => {
+            const st = await enablePush();
+            const msg: Record<string, string> = {
+              registered: "Avisos ativados neste celular.",
+              "open-in-new-tab": "Abra o painel direto no navegador (fora da pré-visualização) para ativar.",
+              denied: "Notificações bloqueadas. Libere nas configurações do navegador para este site.",
+              unsupported: "Este navegador não suporta avisos. No iPhone, adicione o site à tela inicial primeiro.",
+              "not-configured": "Avisos ainda não configurados.",
+              error: "Não foi possível ativar os avisos.",
+            };
+            (st === "registered" ? toast.success : toast.error)(msg[st]);
+          }}
+          className="flex items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-medium text-muted-foreground"
+        >
+          <Bell className="h-3.5 w-3.5" /> Avisos
+        </button>
         <button
           type="button"
           onClick={() => supabase.auth.signOut()}
@@ -757,6 +777,7 @@ function Panel() {
         >
           <LogOut className="h-3.5 w-3.5" /> Sair
         </button>
+        </div>
       </header>
 
       <div className="flex gap-2 overflow-x-auto px-6 pt-6">

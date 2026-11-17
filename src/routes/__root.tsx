@@ -127,11 +127,11 @@ function RootComponent() {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
         .getRegistrations()
-        .then((regs) => regs.forEach((r) => r.unregister()))
+        .then((regs) => regs.forEach((r) => { if (!r.active?.scriptURL.includes("firebase-messaging-sw")) void r.unregister(); }))
         .catch(() => {});
     }
     if ("caches" in window) {
-      caches.keys().then((keys) => keys.forEach((k) => caches.delete(k))).catch(() => {});
+      caches.keys().then((keys) => keys.filter((k) => !k.includes("firebase")).forEach((k) => caches.delete(k))).catch(() => {});
     }
   }, []);
 

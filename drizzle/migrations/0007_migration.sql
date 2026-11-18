@@ -1,1 +1,0 @@
-GRANT UPDATE (price) ON public.bookings TO authenticated;

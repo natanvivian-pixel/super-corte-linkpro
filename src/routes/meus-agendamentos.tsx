@@ -17,8 +17,8 @@ type Booking = {
 export const Route = createFileRoute("/meus-agendamentos")({
   head: () => ({
     meta: [
-      { title: "Meus agendamentos — Barbearia Bom Jesus" },
-      { name: "description", content: "Consulte os próximos agendamentos na Barbearia Bom Jesus." },
+      { title: "Meus agendamentos — Barbearia Super Corte" },
+      { name: "description", content: "Consulte os próximos agendamentos na Barbearia Super Corte." },
     ],
   }),
   component: MeusAgendamentos,

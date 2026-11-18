@@ -79,10 +79,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Barbearia Bom Jesus — Agendamento online" },
+      { title: "Barbearia Super Corte — Agendamento online" },
       {
         name: "description",
-        content: "Agende seu corte, barba ou pigmentação na Barbearia Bom Jesus em poucos cliques.",
+        content: "Agende seu corte, barba ou pigmentação na Barbearia Super Corte em poucos cliques.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

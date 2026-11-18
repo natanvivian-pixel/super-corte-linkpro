@@ -1,13 +1,13 @@
 {
-  "name": "Painel Barbearia Bom Jesus",
+  "name": "Painel Barbearia Super Corte",
   "short_name": "Painel Barber",
   "id": "/admin",
   "start_url": "/admin",
   "scope": "/admin",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#121214",
-  "theme_color": "#121214",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "lang": "pt-BR",
   "icons": [
     { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },

@@ -150,13 +150,13 @@ export const Route = createFileRoute("/admin")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Painel — Barbearia Bom Jesus" },
+      { title: "Painel — Barbearia Super Corte" },
       { name: "description", content: "Painel da barbearia com os agendamentos em tempo real." },
       { name: "robots", content: "noindex" },
       { name: "theme-color", content: "#121214" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-title", content: "Painel Barber" },
-      { property: "og:title", content: "Painel — Barbearia Bom Jesus" },
+      { property: "og:title", content: "Painel — Barbearia Super Corte" },
       { property: "og:description", content: "Agendamentos em tempo real da barbearia." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -916,7 +916,7 @@ function Panel() {
                   <Trash2 className="h-3.5 w-3.5" /> Excluir
                 </button>
                 <a
-                  href={`https://wa.me/55${b.customer_phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Olá ${b.customer_name}! Aqui é da Barbearia Bom Jesus, sobre seu horário de ${formatDateBR(b.booking_date)} às ${b.booking_time} (${b.service_name}).`)}`}
+                  href={`https://wa.me/55${b.customer_phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Olá ${b.customer_name}! Aqui é da Barbearia Super Corte, sobre seu horário de ${formatDateBR(b.booking_date)} às ${b.booking_time} (${b.service_name}).`)}`}
                   target="_blank"
                   rel="noreferrer"
                   className="ml-auto flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium"

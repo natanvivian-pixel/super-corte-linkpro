@@ -10,13 +10,13 @@ import { formatBRL, type Service } from "@/lib/booking";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Barbearia Bom Jesus — Agende seu horário" },
+      { title: "Barbearia Super Corte — Agende seu horário" },
       {
         name: "description",
         content:
-          "Escolha o serviço, veja o valor e agende seu horário na Barbearia Bom Jesus em poucos cliques.",
+          "Escolha o serviço, veja o valor e agende seu horário na Barbearia Super Corte em poucos cliques.",
       },
-      { property: "og:title", content: "Barbearia Bom Jesus — Agende seu horário" },
+      { property: "og:title", content: "Barbearia Super Corte — Agende seu horário" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       {

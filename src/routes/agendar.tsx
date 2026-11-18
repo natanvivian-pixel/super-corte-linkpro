@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { BrandHeader } from "@/components/BrandHeader";
 import { Button } from "@/components/ui/button";
 import { CatalogPhoto } from "@/components/CatalogPhoto";
-import logo from "@/assets/bom-jesus-logo.png.asset.json";
+import logo from "@/assets/super-corte-logo.png.asset.json";
 import {
   addDaysISO,
   availableSlots,
@@ -44,12 +44,12 @@ export const Route = createFileRoute("/agendar")({
 
   head: () => ({
     meta: [
-      { title: "Agendar horário — Barbearia Bom Jesus" },
+      { title: "Agendar horário — Barbearia Super Corte" },
       {
         name: "description",
-        content: "Escolha serviço, dia e horário e confirme seu agendamento na Barbearia Bom Jesus.",
+        content: "Escolha serviço, dia e horário e confirme seu agendamento na Barbearia Super Corte.",
       },
-      { property: "og:title", content: "Agendar horário — Barbearia Bom Jesus" },
+      { property: "og:title", content: "Agendar horário — Barbearia Super Corte" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       {
@@ -368,7 +368,7 @@ function Agendar() {
     return (
       <div className="min-h-screen bg-background pb-12">
         <main className="mx-auto max-w-md px-5 pt-10 text-center">
-          <img src={logo.url} alt="Barbearia Bom Jesus" className="mx-auto h-32 w-32 object-contain" />
+          <img src={logo.url} alt="Barbearia Super Corte" className="mx-auto h-32 w-32 object-contain" />
           <h1 className="mt-4 font-display text-xl font-semibold uppercase tracking-[0.2em] text-gold">{authMode === "signup" ? "Crie sua conta" : "Entrar"}</h1>
           <p className="mt-3 text-sm text-muted-foreground">{authMode === "signup" ? "Leva 1 minuto e é só uma vez. Depois, seu celular fica conectado e você só escolhe o horário." : "Use o e-mail e a senha que você cadastrou."}</p>
           <div className="mt-6 space-y-3 text-left">
@@ -431,10 +431,10 @@ function Agendar() {
     <div className="min-h-screen bg-background pb-12">
       <main className="mx-auto max-w-2xl px-5 sm:px-8">
         <div className="pt-10 text-center sm:pt-14">
-          <Link to="/" className="inline-block" aria-label="Barbearia Bom Jesus — início">
-            <img src={logo.url} alt="Barbearia Bom Jesus" className="mx-auto h-40 w-40 object-contain sm:h-48 sm:w-48" />
+          <Link to="/" className="inline-block" aria-label="Barbearia Super Corte — início">
+            <img src={logo.url} alt="Barbearia Super Corte" className="mx-auto h-40 w-40 object-contain sm:h-48 sm:w-48" />
           </Link>
-          <h1 className="mt-4 font-display text-xl font-semibold uppercase tracking-[0.28em] text-gold sm:text-2xl">Barbearia Bom Jesus</h1>
+          <h1 className="mt-4 font-display text-xl font-semibold uppercase tracking-[0.28em] text-gold sm:text-2xl">Barbearia Super Corte</h1>
           <p className="mt-3 text-xs uppercase tracking-[0.34em] text-foreground">Corte <span className="px-2 text-gold">•</span> Barba <span className="px-2 text-gold">•</span> Estilo</p>
         </div>
 

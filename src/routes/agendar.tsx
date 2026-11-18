@@ -430,12 +430,12 @@ function Agendar() {
   return (
     <div className="min-h-screen bg-background pb-12">
       <main className="mx-auto max-w-2xl px-5 sm:px-8">
-        <div className="pt-10 text-center sm:pt-14">
+        <div className="pt-8 text-center sm:pt-12" style={{background:"radial-gradient(ellipse at 50% 30%, oklch(1 0 0 / 0.1), transparent 65%)"}}>
           <Link to="/" className="inline-block" aria-label="Barbearia Super Corte — início">
-            <img src={logo.url} alt="Barbearia Super Corte" className="mx-auto h-40 w-40 object-contain sm:h-48 sm:w-48" />
+            <img src={logo.url} alt="Barbearia Super Corte" className="mx-auto h-56 w-56 object-contain drop-shadow-[0_0_30px_oklch(1_0_0/0.15)] sm:h-64 sm:w-64" />
           </Link>
-          <h1 className="mt-4 font-display text-xl font-semibold uppercase tracking-[0.28em] text-gold sm:text-2xl">Barbearia Super Corte</h1>
-          <p className="mt-3 text-xs uppercase tracking-[0.34em] text-foreground">Corte <span className="px-2 text-gold">•</span> Barba <span className="px-2 text-gold">•</span> Estilo</p>
+          <h1 className="mt-5 font-display text-3xl font-extrabold uppercase tracking-wide text-foreground sm:text-4xl">Barbearia Super Corte</h1>
+          <p className="mt-2 text-xs uppercase tracking-[0.34em] text-muted-foreground">Estilo <span className="px-2">•</span> Qualidade <span className="px-2">•</span> Rapidez</p>
         </div>
 
         <section className="mt-12">

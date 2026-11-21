@@ -162,8 +162,8 @@ export const Route = createFileRoute("/admin")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
-      { rel: "manifest", href: "/manifest.webmanifest" },
-      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: "/manifest.webmanifest?v=sc" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon-sc.png", sizes: "180x180" },
     ],
   }),
   component: Admin,

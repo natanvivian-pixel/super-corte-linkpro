@@ -379,7 +379,7 @@ function Admin() {
     );
   }
 
-  const adminEmails = ["natanvivian39@gmail.com", "douglasmachadodigao@gmail.com", "juniorjosias2018@gmail.com"];
+  const adminEmails = ["natanvivian39@gmail.com", "douglasmachadodigao@gmail.com", "juniorjosias2018@gmail.com", "pedrooa2lite@gmail.com"];
   const isAuthorizedAdmin = !!session?.user.email && adminEmails.includes(session.user.email.trim().toLowerCase());
 
   // An authenticated but unauthorized account must never see the admin panel.
@@ -414,7 +414,7 @@ function LoginCard() {
   async function submit() {
     setBusy(true);
     const normalizedEmail = email.trim().toLowerCase();
-    const adminEmails = ["natanvivian39@gmail.com", "douglasmachadodigao@gmail.com", "juniorjosias2018@gmail.com"];
+    const adminEmails = ["natanvivian39@gmail.com", "douglasmachadodigao@gmail.com", "juniorjosias2018@gmail.com", "pedrooa2lite@gmail.com"];
     if (!adminEmails.includes(normalizedEmail)) {
       toast.error("Este e-mail não está autorizado a acessar o painel.");
       setBusy(false);

@@ -661,7 +661,12 @@ function Panel() {
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "barbers" }, () => loadBarbers())
       .subscribe();
+    const onVisible = () => { if (document.visibilityState === "visible") { void load(); void loadBarbers(); } };
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", onVisible);
     return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", onVisible);
       supabase.removeChannel(channel);
     };
   }, []);
@@ -682,13 +687,15 @@ function Panel() {
 
   async function remove(b: Booking) {
     if (!confirm(`Excluir o agendamento de ${b.customer_name} às ${b.booking_time}? Essa ação não pode ser desfeita.`)) return;
+    setBookings((prev) => prev.filter((x) => x.id !== b.id));
     const { error } = await supabase.from("bookings").delete().eq("id", b.id);
-    if (error) toast.error("Não foi possível excluir.");
+    if (error) { toast.error("Não foi possível excluir."); void load(); }
   }
 
   async function setStatus(id: string, status: string) {
+    setBookings((prev) => prev.map((x) => (x.id === id ? { ...x, status } : x)));
     const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
-    if (error) toast.error("Não foi possível atualizar.");
+    if (error) { toast.error("Não foi possível atualizar."); void load(); }
   }
 
   async function transfer(b: Booking, to: string) {
